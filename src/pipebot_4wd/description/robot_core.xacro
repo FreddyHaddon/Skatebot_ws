@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="inertial_macros.xacro"/>
+    <xacro:include filename="robot_properties.xacro"/>
+    <xacro:include filename="dynamixel.xacro"/>
+    <xacro:include filename="wheel.xacro"/>
+
+    <!-- Define the robot base and links to components attached to the base. -->
+
+    <!-- BASE LINK -->
+    <link name="base_link">
+        <origin xyz="0 0 0.065" rpy="0 0 0"/>
+    </link>
+
+    <!-- BASE_FOOTPRINT LINK.  The base footprint is on the ground directly underneath the base_link. -->
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_footprint">
+    </link>
+
+    <!-- CHASSIS LINK -->
+
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis"/>
+        <!-- No origin offset as centre of mass of chassis is the same as base_link. -->
+    </joint>
+
+    <link name="chassis">
+        <visual>
+            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+            <material name="orange"/>
+        </visual>
+        <collision>
+            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+
+    <gazebo reference="chassis">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <!-- A tail to show which end is the back. Not functional so no collision or mass. -->
+    <joint name="chassis_tail_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis_tail"/>
+        <origin xyz="${chassis_length} ${chassis_width/2} ${chassis_height/2}"/>
+    </joint>
+
+    <link name="chassis_tail">
+        <visual>
+            <origin xyz="0.05 -0.025 0"/>
+            <geometry>
+                <box size="0.10 0.01 0.01"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+    </link>
+
+    <!-- Dynamixels -->
+    <xacro:dynamixel prefix="front_right" wheel_link="front_right_wheel" origin_x="0.5" origin_y="0.5" origin_z="0.5" reflect="1"/>
+    <xacro:dynamixel prefix="front_left" wheel_link="front_left_wheel" origin_x="-0.5" origin_y="-0.5" origin_z="-0.5" reflect="-1"/>
+
+    <!-- Wheels -->
+    <xacro:wheel prefix="front_right" origin_x="0.1" origin_y="0.1" origin_z="0.1" reflect="1"/>
+    <xacro:wheel prefix="front_left" origin_x="0.1" origin_y="0.1" origin_z="0.1" reflect="-1"/>
+
+
+</robot>

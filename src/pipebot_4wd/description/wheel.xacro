@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--
+    wheel.xacro
+
+    Called like:
+      <xacro:wheel prefix="front_right" origin_x="0.1" origin_y="0.1" origin_z="0.1" reflect="1"/>
+      <xacro:wheel prefix="front_left"  origin_x="0.1" origin_y="0.1" origin_z="0.1" reflect="-1"/>
+
+    Notes:
+      - This macro assumes the parent link is "base_link".
+      - If your robot uses a different chassis link name, change parent="base_link" below.
+  -->
+
+  <xacro:macro name="wheel" params="prefix reflect:=1 pose_x:=0 pose_y:=0 pose_z:=0 origin_x:=0 origin_y:=0 origin_z:=0">
+
+    <!-- Basic wheel geometry (tweak to your real wheel) -->
+    <xacro:property name="wheel_radius" value="0.05"/>
+    <xacro:property name="wheel_width"  value="0.03"/>
+    <xacro:property name="wheel_mass"   value="0.25"/>
+
+    <!-- Inertia (rough solid cylinder about its central axis) -->
+    <xacro:property name="Ixx" value="${0.5 * wheel_mass * wheel_radius * wheel_radius}"/>
+    <xacro:property name="Iyy" value="${(1.0/12.0) * wheel_mass * (3*wheel_radius*wheel_radius + wheel_width*wheel_width)}"/>
+    <xacro:property name="Izz" value="${Iyy}"/>
+
+    <link name="${prefix}_wheel">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 1.57079632679 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 1.57079632679 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${wheel_mass}"/>
+        <inertia ixx="${Ixx}" ixy="0" ixz="0" iyy="${Iyy}" iyz="0" izz="${Izz}"/>
+      </inertial>
+    </link>
+
+    <!-- Joint from chassis to wheel -->
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <!-- Change this if your chassis link has a different name -->
+      <parent link="base_link"/>
+      <child link="${prefix}_wheel"/>
+      <origin xyz="${(pose_x if pose_x != 0 else origin_x)} ${(reflect * (pose_y if pose_y != 0 else origin_y))} ${(pose_z if pose_z != 0 else origin_z)}" rpy="0 0 0"/>
+      <!-- Wheel spins about its axle; adjust axis if needed -->
+      <axis xyz="0 1 0"/>
+      <limit effort="10" velocity="20"/>
+    </joint>
+
+  </xacro:macro>
+</robot>
+        <!--Gazebo can't cope with smaller inertia-> it leads to joints collapsing, see here: https://wiki.ros.org/urdf/Tutorials/Adding%20Physical%20and%20Collision%20Properties%20to%20a%20URDF%20Model -->
+

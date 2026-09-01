@@ -1,0 +1,57 @@
+# Logitech Cordless RumblePad 2 F710
+# This file is used to convert messages published on /joy into twist messages
+# published on /cmd_vel.
+# Linear values are in meters per second.
+# Angular values are in radians per second.
+# Note: buttons and axes are 0 based.
+# This gamepad has two modes.  This layout is for when the mode LED is off.
+# Axes:
+#   0 left l/r, 1 left up/down, 2 LT, 3 right l/r, 4 right up/down, 5 RT,
+#   6 DPAD L/R, 7 DPAD U/D.
+# Buttons:
+#   0 A, 1 B, 2 X, 3 Y, 4 LB, 5 RB, 6 BACK, 7 START, 8 Logitech button,
+#   9 L Joystick button, 10 R Joystick button.
+# Logitech and mode are not processed.
+
+# Button values for the joystick action controller node.
+joystick_action_controller_node:
+  ros__parameters:
+    # Button X
+    button_rotate_turret_forward: 3
+    # Button Y
+    button_rotate_turret_backward: 2
+    # Button A
+    button_start_ultrasonic: 1
+    # Button B
+    button_start_acoustic: 0
+
+# Speeds configured for Pipebot 4WD.
+# Max speeds determined by increasing values until servos don't change speed.
+# Max linear speed is 0.3m/s.
+# Max rotation theorectically around 5.5 rad/s. However, the Dynamixels
+# overheat when driven at after rates over 1.0 r/s so we have chosen safe
+# values.
+
+teleop_twist_joy_node:
+  ros__parameters:
+    axis_linear:
+      # Axis number
+      x: 1
+    scale_linear:
+      x: 0.15
+    scale_linear_turbo:
+      x: 0.30
+
+    axis_angular:
+      # Axis number
+      yaw: 0
+    scale_angular:
+      # Radians per second
+      yaw: 0.314
+    scale_angular_turbo:
+      yaw: 0.314
+
+    # Top left trigger.
+    enable_button: 4
+    # Bottom left trigger.
+    enable_turbo_button: 6

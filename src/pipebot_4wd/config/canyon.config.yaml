@@ -1,0 +1,44 @@
+# Canyon wireless gamepad CND-GPW3
+# This file is used to convert messages published on /joy into twist messages
+# published on /cmd_vel.
+# Linear values are in meters per second.
+# Angular values are in radians per second.
+# Note: buttons and axes are 0 based.
+# Axes:
+#   0 left l/r, 1 left up/down, 2 right l/r, 3 right up/down,
+#   4 DPAD L/R, 5 DPAD U/D.
+# Buttons:
+#   0 Y, 1 B, 2 A, 3 X, 4 LB, 5 RB, 6 LT, 7 RT,
+#   8 BACK, 9 START, 10 L Joystick button, 11 R Joystick button.
+# Turbo and home button are not processed.
+#
+# Speeds configured for Pipebot 4WD.
+# Max speeds determined by increasing values until servos don't change speed.
+# Max linear speed is 0.3m/s.
+# Max rotation is around 5.5 rad/s.
+
+teleop_twist_joy_node:
+  ros__parameters:
+    axis_linear:
+      # Axis number
+      x: 1
+    # For some reason joystick forward = move backwards.
+    # Invert x values.
+    scale_linear:
+      x: -0.10
+    scale_linear_turbo:
+      x: -0.20
+
+    axis_angular:
+      # Axis number
+      yaw: 0
+    scale_angular:
+      # Radians per second
+      yaw: -0.25
+    scale_angular_turbo:
+      yaw: -2.5
+
+    # Top left trigger.
+    enable_button: 4
+    # Bottom left trigger.
+    enable_turbo_button: 6

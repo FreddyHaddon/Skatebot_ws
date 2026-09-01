@@ -1,0 +1,59 @@
+Shortcuts (found in ~/.bashrc):
+	wsbuild = moves to the workspace, sources jazzy and builds packages.
+	srcjaz = sources /opt/ros/jazzy/setup.bash
+	srcins = sources ~/ws/install/setup.bash
+	build = builds packages
+	sensors = launch the sensors.
+	record = launch sensors and begin recording.
+	robot = launch the robot manual controls and low level control.
+	semiauto = launch semi autonomous control.
+	fox = launch foxbridge.
+	ip = displays the ip.
+	lidar = launches only lidars.
+	camera = launches only camera.
+	imu = launches only imu.
+	rviz2 = launches rviz2 for lidar visualisation
+	relative = provides the relative euler imu data in real time.
+	euler = provides the absolute euler imu data in real time.
+	non-euler = provides the non-euler imu data in real time.
+	nodes = lists active nodes.
+	topics = lists active topics.
+
+Starting the robot:
+	1. Ensure the robot is powered on when on a flat surface, with the turret facing forwards (There is a visible screw on the battery compartment, this is the back.)
+	2. Open the terminal and input "wsbuild".
+	3. Input "sensors" or "recording", depending on what you want.
+	4. Open a new terminal tab and input "robot".
+	5. Open a new terminal tab and input "semiauto".
+	6. Turn on the switch for the battery, found next to the usbc port.
+	7. Unplug all cables from the robot, and plug in the controller nano receiver to the top usb port.
+	8. Calibrate the motors. Place Skatebot on flat ground and slowly turn the robot left and right. Move the joystick gradually, do not snap it to any directions.
+	   Then go forwards and backwards a few centimeters, again moving the joystick slowly. Then place the robot in the pipe.
+
+Starting the robot with live visualisation:
+	1. Carry out steps 1 - 5 from above (on the robot).
+	2. On the robot: Open a new terminal tab and input "fox".
+	3. On the robot: Open a new terminal tab and input "ip".
+	4. On the laptop: input "ssh skatebot-ubuntu@<IP>" where IP is the ip found in step 3.
+	5. On the laptop: open a new terminal tab, input: "ssh -L 8765:localhost:8765 skatebot-ubuntu@<IP>".
+	6. On the laptop: open foxglove studio and open a live connection with localhost:8765.
+	7. Carry out steps 6 - 8 from above.
+	
+Using the controller:
+	The green light should be off, if it is on, press the mode button until it turns off. If it is flashing, that is ok, but it cannot be solid green.
+	LB = dead man's switch. Must be held down to use manual controls.
+	Left joystick = controls the motors. Always move it gradually. Only move it to up, down, left or right. Do not move the joystick to 45 degrees or any other angle.
+	X = Toggle automatic control.
+	B = Rotate the turret
+	
+Stopping the robot:
+	1. Use CTRL+C to stop each terminal tab cleanly. It is best practice to stop the terminal tabs in the reverse order that you launched them. 
+	   Wait for each tab to fully stop before stopping the next tab
+	2. After every process has finished cleanly, input "poweroff" to power off the robot.
+	3. Wait a few seconds, then turn off the battery switch or unplug the power cable.
+	4. On the laptop: close foxglove studio and stop the 2 terminal tabs with CTRL+C, then close the terminal.
+
+Viewing recorded data:
+	1. Recorded data is stored in ~/Recordings named by its date and time. Use a USB drive to copy them to a computer. 
+	2. On the computer, open foxglove studio and select "Open 	local file(s)" and open the .mcap file.
+

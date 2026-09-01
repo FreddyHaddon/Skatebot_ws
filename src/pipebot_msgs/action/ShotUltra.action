@@ -1,0 +1,5 @@
+bool start     
+---
+bool finish     
+---
+int64 percentage

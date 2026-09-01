@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Dynamixel MX-28AT -->
+    <xacro:property name="dynamixel_length" value="0.050"/>
+    <xacro:property name="dynamixel_width" value="0.035"/>
+    <xacro:property name="dynamixel_height" value="0.035"/>
+    <xacro:property name="dynamixel_mass" value="0.080"/>
+
+    <!-- Black is actaully very dark grey so they can be seen -->
+    <material name="dynamixel_black">
+        <color rgba="0.1 0.1 0.1 1" />
+    </material>
+
+    <xacro:macro name="dynamixel" params="prefix wheel_link origin_x origin_y origin_z reflect">
+        <link name="${prefix}_dynamixel">
+            <visual>
+                <geometry>
+                    <box size="${dynamixel_length} ${dynamixel_width} ${dynamixel_height}"/>
+                </geometry>
+                <origin xyz="${origin_x} ${origin_y} ${origin_z}" rpy="0 0 0"/>
+                <material name="dynamixel_black"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${dynamixel_length} ${dynamixel_width} ${dynamixel_height}"/>
+                </geometry>
+                <origin xyz="${origin_x} ${origin_y} ${origin_z}" rpy="0 0 0"/>
+            </collision>
+            <xacro:inertial_box mass="${dynamixel_mass}" x="${dynamixel_length}" y="${dynamixel_width}" z="${dynamixel_height}">
+                <origin xyz="${dynamixel_length/2} ${dynamixel_width/2} ${dynamixel_height/2}" rpy="0 0 0"/>
+            </xacro:inertial_box>
+        </link>
+
+        <!-- Fixed joint to base -->
+        <joint name="base_to_${prefix}_dynamixel_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="${prefix}_dynamixel"/>
+            <origin xyz="${origin_x} ${origin_y} ${origin_z}"/>
+        </joint>
+
+        <!-- Rotating joint -->
+        <joint name="${prefix}_dynamixel_to_wheel_joint" type="continuous">
+            <parent link="${prefix}_dynamixel"/>
+            <child link="${wheel_link}"/>
+            <origin xyz="${origin_x} ${origin_y} ${origin_z}"/>
+        </joint>
+    </xacro:macro>
+
+</robot>

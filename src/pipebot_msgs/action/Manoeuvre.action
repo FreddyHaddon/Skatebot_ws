@@ -1,0 +1,5 @@
+uint64 order # Request
+---
+bool finish # Result: Failed or successful
+---
+string state # Feedback: STUCK, MISS, FLIP, IN_PROGRESS

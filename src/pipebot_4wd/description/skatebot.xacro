@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<robot name="skatebot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find pipebot_4wd)/description/robot_properties.xacro" />
+    <xacro:include filename="$(find pipebot_4wd)/description/wheel.xacro" />
+    <xacro:include filename="$(find pipebot_4wd)/description/gazebo_control.xacro" />
+   
+    <xacro:arg name="sim_mode" default="false"/>
+
+    <!-- Define the robot base and links to components attached to the base. -->
+
+    <link name="base_footprint">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </link>
+    
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+        </collision>
+        <inertial>
+      		<origin xyz="0 0 0" rpy="0 0 0"/>
+      		<mass value="${chassis_mass}" />
+               	<inertia ixx="${chassis_ixx}" ixy="0.0" ixz="0.0"
+               		iyy="${chassis_iyy}" iyz="0.0"
+               		izz="${chassis_izz}" />
+      	</inertial>
+    </link>
+
+    <joint name="base_footprint_joint" type="fixed">
+        <child link="base_link"/>
+        <parent link="base_footprint"/>
+        <origin xyz="0 0 0.165" rpy="0 0 0"/>
+    </joint>
+    
+    <xacro:wheel prefix="front_left" pose_x="${wheel_distance}" pose_y="${chassis_battery/2 + wheel_thickness/2 + 0.005}"/>
+    <xacro:wheel prefix="front_right" pose_x="${wheel_distance}" pose_y="${-chassis_battery/2 - wheel_thickness/2 - 0.005}"/>
+    <xacro:wheel prefix="back_left" pose_x="${-wheel_distance}" pose_y="${chassis_battery/2 + wheel_thickness/2 + 0.005}"/>
+    <xacro:wheel prefix="back_right" pose_x="${-wheel_distance}" pose_y="${-chassis_battery/2 - wheel_thickness/2 - 0.005}"/>
+    
+    <link name="imu">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${imu_size_x} ${imu_size_y} ${imu_size_z}"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${imu_size_x} ${imu_size_y} ${imu_size_z}"/>
+            </geometry>
+        </collision>
+        <inertial>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<mass value="0.02" />
+		<inertia ixx="0.5e-3" ixy="0.0" ixz="0.0"
+			iyy="0.5e-3" iyz="0.0"
+			izz="0.5e-3" />
+	</inertial>
+    </link>
+
+     <joint name="base_imu_joint" type="fixed">
+        <child link="imu"/>
+        <parent link="base_link"/>
+        <origin xyz="0 0 ${chassis_height/2.0+ imu_size_z/2}" rpy="0 0 0"/>
+    </joint>
+    
+    <link name="base_laser">
+    </link>
+    <joint name="base_laser_joint" type="fixed">
+        <child link="base_laser"/>
+        <parent link="base_link"/>
+        <origin xyz="0 0 ${chassis_height+ imu_size_z}" rpy="0 0 0"/>
+    </joint>
+    
+    <link name="camera">
+    </link>
+    <joint name="base_camera_joint" type="fixed">
+        <child link="camera"/>
+        <parent link="base_link"/>
+        <origin xyz="${chassis_length/2.0} 0 0.025" rpy="0 0 0"/>
+    </joint>
+   
+    <xacro:if value="$(arg sim_mode)">
+	<ros2_control name="GazeboSystem" type="system">
+            <hardware>
+                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            </hardware>
+           <xacro:add_controller joint="joint_front_left"/>
+    	   <xacro:add_controller joint="joint_front_right"/>
+    	   <xacro:add_controller joint="joint_back_left"/>
+    	   <xacro:add_controller joint="joint_back_right"/>
+    	</ros2_control>
+        
+    	<gazebo>
+        	<plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+            		<parameters>$(find pipebot_4wd)/config/4w_controller_velocity.yaml</parameters>
+        	</plugin>
+    	</gazebo>
+    	
+    	<gazebo reference="imu">
+    <sensor name="br_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <imu>
+          <angular_velocity>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+        <plugin name="bytes_imu" filename="libgazebo_ros_imu_sensor.so">
+            <ros>
+                <namespace>imu</namespace>
+                <remapping>~/out:=data</remapping>
+            </ros>
+            <initial_orientation_as_reference>false</initial_orientation_as_reference>
+        </plugin>
+    </sensor>
+</gazebo>
+    </xacro:if>
+    
+</robot>

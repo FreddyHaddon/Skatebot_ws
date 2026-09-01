@@ -1,0 +1,22 @@
+# Service definition for the Theme 6 "Send data" service node
+
+# Who is sending the data, to be included as metadata in the packet
+# forwarded over the communications network
+string source_id
+
+# A reference to keep track of order, in case data is expected back, etc.
+uint16 source_ref
+
+# Where we are sending the data. Likely to be translated internally to an
+# IPv6 address, assuming OpenThread works fine.
+uint16 destination_id
+
+# The data itself. An array of bytes is the most generic way I can think
+# of to represent any data. Likely to be split internally into packet-sized
+# portions before transmission.
+byte[] payload
+
+---
+
+# Returned once we have feedback from the radio about the status of the data
+string status_code

@@ -1,0 +1,38 @@
+# Hama "uRage Ess" Gamepad
+# Axes: 0 left l/r, 1 left up/down, 2 right l/r, 3 right up/down,
+#       4 Pad l/r, 5 pad up/down
+# Buttons: 0 "1", 1 "2", 2 "3", 3 "4",
+#          4 "5", 5 "6", 6 "7", 7 "8",
+#          8 = "9", 9 = "10",
+
+# NOTE: Axis 0: Left is negative, right positive.
+#       Axis 1: Forward is negative, backwards is positive.
+
+# Speeds configured for Pipebot 4WD.
+# Max speeds determined by increasing values until servos don't change speed.
+# Max linear speed is 0.3m/s.
+# Max rotation is around 5.5 rad/s.
+
+teleop_twist_joy_node:
+  ros__parameters:
+    axis_linear:
+      # Axis number
+      x: 1
+    scale_linear:
+      x: 0.15
+    scale_linear_turbo:
+      x: 0.30
+
+    axis_angular:
+      # Axis number
+      yaw: 0
+    scale_angular:
+      # Radians per second
+      yaw: 1.57
+    scale_angular_turbo:
+      yaw: 3.14
+
+    # Top left trigger.
+    enable_button: 4
+    # Bottom left trigger.
+    enable_turbo_button: 6

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Chassis -->
+    <xacro:property name="chassis_length" value="0.24"/>
+    <xacro:property name="chassis_width" value="0.160"/>
+    <xacro:property name="chassis_battery" value="0.04"/>
+    <xacro:property name="chassis_height" value="0.09"/>
+    <xacro:property name="chassis_density" value="1000"/>
+    <xacro:property name="chassis_mass" value="${chassis_length*chassis_width*chassis_height*chassis_density}"/>
+    <xacro:property name="chassis_ixx" value="${chassis_mass*(chassis_width*chassis_width + chassis_height*chassis_height)/12.0}"/>
+    <xacro:property name="chassis_iyy" value="${chassis_mass*(chassis_height*chassis_height + chassis_length*chassis_length)/12.0}"/>
+    <xacro:property name="chassis_izz" value="${chassis_mass*(chassis_width*chassis_width + chassis_length*chassis_length)/12.0}"/>
+
+    <!-- Wheel -->
+    <xacro:property name="wheel_radius" value="0.055"/>
+    <xacro:property name="wheel_thickness" value="0.055"/>
+    <xacro:property name="wheel_distance" value="0.06"/>
+    <xacro:property name="wheel_density" value="1150"/>
+    <xacro:property name="wheel_mass" value="${wheel_density*pi*wheel_radius*wheel_radius*wheel_thickness}"/>
+
+    <!-- IMU -->
+    <xacro:property name="imu_size_x" value="0.04"/>
+    <xacro:property name="imu_size_y" value="0.04"/>
+    <xacro:property name="imu_size_z" value="0.025"/>
+
+    <material name="wheel_grey">
+        <color rgba="0.4 0.4 0.4 1" />
+    </material>
+
+
+    <!-- Colours -->
+    <material name="white">
+        <color rgba="1 1 1 1" />
+    </material>
+
+    <material name="orange">
+        <color rgba="1 0.3 0.1 1"/>
+    </material>
+
+    <material name="blue">
+        <color rgba="0.2 0.2 1 1"/>
+    </material>
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <material name="red">
+        <color rgba="1 0 0 1"/>
+    </material>
+
+</robot>

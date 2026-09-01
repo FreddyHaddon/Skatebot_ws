@@ -1,0 +1,7 @@
+low_control_with_imu:
+  ros__parameters:
+    critical_roll: 30.0
+    critical_pitch: 30.0
+    critical_yaw: 720.0
+    d_pad_forward_key: 7
+    d_pad_speed_m_s: 0.1
