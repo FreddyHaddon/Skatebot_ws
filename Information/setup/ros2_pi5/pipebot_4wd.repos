@@ -1,0 +1,67 @@
+repositories:
+  # Main repo for this robot.
+  src/pipebot_4wd:
+    type: git
+    url: https://github.com/pipebots/pipebot_4wd.git
+    version: main
+
+  # Pipebot messages used by all themes.
+  src/pipebot-msgs:
+    type: git
+    url: https://github.com/pipebots/pipebot-msgs.git
+    version: main
+
+  # Theme 2.
+  src/sprint3-t2-ros2:
+    type: git
+    url: https://github.com/pipebots/sprint3-t2-ros2.git
+    version: main
+  src/tank-ultra:
+    type: git
+    url: https://github.com/pipebots/tank-ultra.git
+    version: main
+
+  # Theme 3.
+  src/camera_ros:
+    type: git
+    url: https://github.com/pipebots/camera_ros.git
+    version: add-launch-files
+  src/dynamixel-driver:
+    type: git
+    url: https://github.com/pipebots/dynamixel-driver.git
+    version: main
+  src/ldlidar_stl_ros2:
+    type: git
+    url: https://github.com/pipebots/ldlidar_stl_ros2.git
+    version: fix-build-on-bookworm
+  src/low-level-control:
+    type: git
+    url: https://github.com/pipebots/low-level-control.git
+    version: main
+  src/neopixel-rpi-ros2:
+    type: git
+    url: https://github.com/pipebots/neopixel-rpi-ros2.git
+    version: main
+  src/ros2-imu-bno055:
+    type: git
+    url: https://github.com/pipebots/ros2-imu-bno085
+    version: main
+  src/rpi-monitor:
+    type: git
+    url: https://github.com/pipebots/rpi-monitor.git
+    version: main
+
+  # Theme 4.
+  src/sprint3-t4-ros2:
+    type: git
+    url: https://github.com/pipebots/sprint3-t4-ros2.git
+    version: tankbot
+
+  # Theme 5.
+  src/sprint3-t5-ros2:
+    type: git
+    url: https://github.com/pipebots/sprint3-t5-ros2.git
+    version: Add-lidar-location-classification
+
+  # Theme 6.
+  # TODO

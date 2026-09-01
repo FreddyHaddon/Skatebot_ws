@@ -1,0 +1,6 @@
+# Audio settings for SkateBot
+# Microphone
+dtparam=i2s=on
+# Speaker
+dtoverlay=hifiberry-dac
+dtoverlay=i2s-mmap
