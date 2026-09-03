@@ -7,21 +7,16 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    sensors_launch = os.path.join(
-        get_package_share_directory("pipebot_4wd"),
-        "launch",
-        "sensors.launch.py"
-    )
-
+    sensors_launch = os.path.join(get_package_share_directory("pipebot_4wd"), "launch", "sensors.launch.py")
 
     recorder = ExecuteProcess(
-        cmd=[
-            "bash", "-c",
-            "mkdir -p /home/skatebot-ubuntu/Recordings &&"
-            "ros2 bag record "
+        cmd=["bash", "-c", 
+             "mkdir -p /home/skatebot-ubuntu/Recordings &&"
+             "ros2 bag record "
             
 # Comment out any topics you don't want to record
-            "/camera/image_raw/compressed "
+#           "/camera/image_raw/compressed "
+            "/camera/preview/compressed "
             "/camera/camera_info "
             "/imu "
             "/imu/euler "
@@ -58,8 +53,5 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(sensors_launch)
         ),
-        TimerAction(
-            period=3.0,
-            actions=[recorder]
-        )
+        TimerAction(period=3.0, actions=[recorder])
     ])
