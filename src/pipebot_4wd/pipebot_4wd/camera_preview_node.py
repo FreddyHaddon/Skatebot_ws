@@ -30,47 +30,22 @@ class CameraPreviewNode(Node):
         self.last_publish_time = 0.0
         self.min_period = 1.0 / self.fps if self.fps > 0 else 0.0
 
-        self.publisher = self.create_publisher(
-            CompressedImage,
-            self.output_topic,
-            10
-        )
-
-        self.subscription = self.create_subscription(
-            Image,
-            self.input_topic,
-            self.image_callback,
-            10
-        )
-
-        self.get_logger().info(
-            f"Preview node running: {self.input_topic} -> {self.output_topic}, "
-            f"{self.width}x{self.height} at {self.fps} FPS"
-        )
+        self.publisher = self.create_publisher(CompressedImage, self.output_topic, 10)
+        self.subscription = self.create_subscription(Image, self.input_topic, self.image_callback, 10)
+        self.get_logger().info(f"Preview node running: {self.input_topic} -> {self.output_topic}, "f"{self.width}x{self.height} at {self.fps} FPS")
 
     def image_callback(self, msg: Image) -> None:
         now = time.monotonic()
-
         if now - self.last_publish_time < self.min_period:
             return
-
         try:
             frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         except Exception as e:
             self.get_logger().error(f"Failed to convert image: {e}")
             return
 
-        preview = cv2.resize(
-            frame,
-            (self.width, self.height),
-            interpolation=cv2.INTER_AREA
-        )
-
-        success, encoded = cv2.imencode(
-            ".jpg",
-            preview,
-            [int(cv2.IMWRITE_JPEG_QUALITY), self.jpeg_quality]
-        )
+        preview = cv2.resize(frame, (self.width, self.height), interpolation=cv2.INTER_AREA)
+        success, encoded = cv2.imencode(".jpg", preview, [int(cv2.IMWRITE_JPEG_QUALITY), self.jpeg_quality])
 
         if not success:
             self.get_logger().error("Failed to encode preview image")
