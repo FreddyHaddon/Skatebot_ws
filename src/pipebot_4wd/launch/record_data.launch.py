@@ -25,7 +25,7 @@ def generate_launch_description():
             "/camera/camera_info "
             "/imu "
             "/imu/euler "
-            "/imu_euler_relative
+            "/imu_euler_relative "
             "/magnetic_field "
             "/scan/front "
 #           "/scan/top "
