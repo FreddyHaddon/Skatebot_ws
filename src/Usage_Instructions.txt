@@ -56,4 +56,3 @@ Stopping the robot:
 Viewing recorded data:
 	1. Recorded data is stored in ~/Recordings named by its date and time. Use a USB drive to copy them to a computer. 
 	2. On the computer, open foxglove studio and select "Open 	local file(s)" and open the .mcap file.
-
