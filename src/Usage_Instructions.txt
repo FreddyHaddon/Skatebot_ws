@@ -1,4 +1,4 @@
-Shortcuts (found in ~/.bashrc):
+Shortcuts (found in ~/.bash_aliases):
 	wsbuild = Moves to the workspace, sources jazzy and builds packages.
 	srcjaz = Sources /opt/ros/jazzy/setup.bash.
 	srcins = Sources ~/ws/install/setup.bash.
@@ -7,20 +7,19 @@ Shortcuts (found in ~/.bashrc):
 	record = Launch sensors and begin recording.
 	robot = Launch the robot manual controls and low-level control.
 	semiauto = Launch semi-autonomous control.
-	fox = Launch foxbridge.
-	ip = Displays the ip.
+	fox = Launch Foxglove Bridge.
+	ip = Displays the IP address of the robot.
 	lidar = Launches only the LiDARs.
 	camera = Launches only the camera.
 	imu = Launches only the IMU.
 	joy = Launches only the joystick.
-	rviz2 = Launches rviz2 for LiDAR visualisation.
+	rviz2 = Launches RViz 2 for LiDAR visualisation.
 	non-euler = Provides the non-Euler imu data in real time.
 	euler = Provides the absolute Euler IMU data in real time.
 	relative = Provides the relative Euler imu data in real time.
 	joytest = Provides the controller inputs in real time.
 	topics = Lists active topics.
 	nodes = Lists active nodes.
-
 
 Starting the robot:
 	1. Ensure the robot is powered on when on a flat surface, with the turret facing forwards (There is a visible screw on the battery compartment, this is the back.)
