@@ -1,3 +1,10 @@
+source /opt/ros/jazzy/setup.bash
+export ROS_DOMAIN_ID=14
+
+if [ -f ~/ws/install/setup.bash ]; then
+    source ~/ws/install/setup.bash
+fi
+
 wsbuild() {
   cd ~/ws || return
   source /opt/ros/jazzy/setup.bash
